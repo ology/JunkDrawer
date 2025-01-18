@@ -92,6 +92,7 @@ get '/files' => sub ($c) {
 
 post '/files' => sub ($c) {
   my $location = $c->param('location') || '';
+  my $url = $c->url_for('files')->query(location => $location);
   my $root = path('.');
   my $subdir = $root->child($location);
   if ($subdir->exists && $subdir->is_dir) {
@@ -99,16 +100,16 @@ post '/files' => sub ($c) {
     my $file = $c->req->upload('files');
     if ($file->size > FILESIZE) {
         $c->flash(error => 'File size too big');
-        return $c->redirect_to($c->url_for('files')->query(location => $location));
+        return $c->redirect_to($url);
     }
     my $destination = $subdir->child($file->filename);
     $file->move_to($destination);
     unless (-e $destination) {
         $c->flash(error => 'Something went wrong');
-        return $c->redirect_to($c->url_for('files')->query(location => $location));
+        return $c->redirect_to($url);
     }
   }
-  $c->redirect_to($c->url_for('files')->query(location => $location));
+  return $c->redirect_to($url);
 } => 'upload';
 
 sub _dir_iter {
