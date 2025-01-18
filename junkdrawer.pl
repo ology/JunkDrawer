@@ -3,6 +3,7 @@ use Mojolicious::Lite -signatures;
  
 use Crypt::Passphrase ();
 use Crypt::Passphrase::Argon2 ();
+use Mojo::SQLite ();
 
 helper auth => sub {
   my $c = shift;
@@ -52,13 +53,14 @@ under sub {
 };
 
 get '/files' => sub ($c) {
-  my $action = $c->param('action') || '';  # action to perform
-  if ($action eq 'view') {
-    $view = 1;
+  my $location = $c->param('location') || '';
+  if ($location) {
   }
-  $c->render(
-    template => 'files',
-  );
+  else {
+    $c->render(
+      template => 'files',
+    );
+  }
 } => 'files';
 
 app->log->level('info');
