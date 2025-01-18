@@ -137,11 +137,10 @@ sub _dir_iter {
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
     my $backup = path(BACKUP, $user);
-    my $name = $path->basename;
     my @stat = stat $path;
     push @$children, {
       is_dir => $path->is_dir ? 1 : 0,
-      name   => $name,
+      name   => $path->basename,
       path   => $path,
       size   => $stat[7],
       time   => $stat[9],
