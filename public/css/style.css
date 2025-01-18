@@ -15,3 +15,7 @@
 .nounder {
   text-decoration: none;
 }
+.padLR {
+  padding-left: 10px;
+  padding-right: 10px;
+}
