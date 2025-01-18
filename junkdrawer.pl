@@ -225,8 +225,12 @@ __DATA__
   </thead>
   <tbody>
 %   for my $child (@$children) {
-    <tr class="<%= $child->{is_dir} ? '' : 'table-success' %>">
+%     if ($child->{is_dir}) {
+    <tr>
+      <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a></td>
+%     } else {
       <td><button type="button" class="btn btn-clear item" data-source="<%= $child->{path} %>" data-bs-toggle="modal" data-bs-target="#saveModal"><%= $child->{name} %></a></td>
+%     }
       <td><%= $child->{size} %> bytes</td>
       <td><%= scalar localtime $child->{time} %></td>
     </tr>
