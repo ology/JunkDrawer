@@ -56,12 +56,16 @@ get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
   my $children = [];
   my $content = '';
-  my $public = path('public');
+  my $public = path('public/JunkDrawer');
   if ($location) {
     my $subdir = $public->child($location);
     if ($subdir->exists) {
       if ($subdir->is_dir) {
-        $children = [ map { s/public\///; $_ } $subdir->children ];
+        my $iter = $subdir->iterator({ follow_symlinks => 1 });
+        while (my $path = $iter->()) {
+            $path =~ s/public\///;
+            push @$children, $path;
+        }
       }
       else {
         $content = "Is a file! $subdir";
@@ -72,8 +76,12 @@ get '/files' => sub ($c) {
     }
   }
   else {
-    $children = [ map { s/public\///; $_ } $public->children ];
-    $location = '/';
+    my $iter = $public->iterator({ follow_symlinks => 1 });
+    while (my $path = $iter->()) {
+        $path =~ s/public\///;
+        push @$children, $path;
+    }
+    $location = 'JunkDrawer';
   }
   $c->render(
     template => 'files',
