@@ -111,7 +111,7 @@ __DATA__
 % if ($content) {
 <p><%= $content %></p>
 % } else {
-<p><b>Children of</b> <code><%= $location %></code>:</p>
+<p>Children of <code><%= $location %></code>:</p>
 <ul>
 %   for my $child (@$children) {
   <li><a href="<%= url_for('files')->query(location => $child) %>"><%= $child %></a></li>
