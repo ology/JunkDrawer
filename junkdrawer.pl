@@ -4,6 +4,7 @@ use Mojolicious::Lite -signatures;
 use Crypt::Passphrase ();
 use Crypt::Passphrase::Argon2 ();
 use Mojo::SQLite ();
+use Path::Tiny ();
 
 helper auth => sub {
   my $c = shift;
@@ -53,12 +54,17 @@ under sub ($c) {
 
 get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
-  my @files;
-  if ($location) {
+  my $files = [];
+  my $content = '';
+  my $public = path('public');
+  my $subdir = $public->child($location);
+  if ($subdir->exists) {
+    
   }
   $c->render(
     template => 'files',
-    files    => \@files;
+    files    => $files,
+    content  => $content,
   );
 } => 'files';
 
