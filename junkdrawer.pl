@@ -104,13 +104,30 @@ post '/files' => sub ($c) {
     }
     my $destination = $subdir->child($file->filename);
     $file->move_to($destination);
-    unless (-e $destination) {
+    unless ($destination->exists) {
         $c->flash(error => 'Something went wrong');
         return $c->redirect_to($url);
     }
   }
   return $c->redirect_to($url);
 } => 'upload';
+
+post '/new_folder' => sub ($c) {
+  my $location = $c->param('location') || '';
+  my $folder = $c->param('folder') || '';
+  my $url = $c->url_for('files')->query(location => $location);
+  my $root = path('.');
+  my $subdir = $root->child($location);
+  if ($subdir->exists && $subdir->is_dir) {
+    my $destination = $subdir->child($folder);
+    $destination->mkdir || die $!;
+    unless ($destination->exists) {
+        $c->flash(error => 'Something went wrong');
+        return $c->redirect_to($url);
+    }
+  }
+  return $c->redirect_to($url);
+} => 'new_folder';
 
 sub _dir_iter {
   my ($c, $where, $children) = @_;
@@ -154,7 +171,13 @@ __DATA__
 @@ files.html.ep
 % layout 'default';
 % title 'Backup';
-<p>Upload, search, view, etc. forms</p>
+<form action="<%= url_for('new_folder') %>" method="post">
+  <input type="hidden" name="location" value="<%= $location %>">
+  <label for="folder"><b>New folder</b>:</label>
+  <input type="text" id="folder" name="folder" class="form-control">
+  <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+</form>
+<p></p>
 <form method="post" enctype="multipart/form-data">
   <input type="hidden" name="location" value="<%= $location %>">
   <label for="file"><b>Upload file</b>:</label>
