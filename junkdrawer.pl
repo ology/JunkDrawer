@@ -171,6 +171,7 @@ __DATA__
 @@ files.html.ep
 % layout 'default';
 % title 'Backup';
+% unless ($content) {
 <form action="<%= url_for('new_folder') %>" method="post">
   <input type="hidden" name="location" value="<%= $location %>">
   <label for="folder"><b>New folder</b>:</label>
@@ -184,6 +185,7 @@ __DATA__
   <input type="file" id="file" name="file" class="form-control">
   <button type="submit" class="btn btn-sm btn-primary">Submit</button>
 </form>
+% }
 <hr>
 % if ($content) {
 <p><%= $content %></p>
