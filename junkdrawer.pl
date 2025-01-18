@@ -85,6 +85,7 @@ __DATA__
 </form>
 
 @@ files.html.ep
+% layout 'default';
 % title 'Junk::Drawer';
 Choose or die!
 
