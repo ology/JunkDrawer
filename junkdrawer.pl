@@ -193,14 +193,24 @@ __DATA__
 <p><%= $content %></p>
 % } else {
 <p>Items under <code><%= $place %>/</code>:</p>
-<ul>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Path</th>
+      <th scope="col">Size</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
 %   for my $child (@$children) {
-  <li>
-    <a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a>
-    <%= $child->{size} %> bytes <%= scalar localtime $child->{time} %>
-  </li>
+    <tr>
+      <td><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a></td>
+      <td><%= $child->{size} %> bytes</td>
+      <td><%= scalar localtime $child->{time} %></td>
+    </tr>
 %   }
-</ul>
+  </tbody>
+</table>
 % }
 
 @@ layouts/default.html.ep
