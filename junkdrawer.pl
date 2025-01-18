@@ -186,8 +186,11 @@ __DATA__
         <code class="source"></code>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <form method="get">
+          <input type="hidden" class="location" name="location" value="">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
       </div>
     </div>
   </div>
@@ -235,6 +238,7 @@ __DATA__
 $(document).ready(function() {
   $('.item').click(function() {
     $('.source').text(this.dataset.source);
+    $('.location').val(this.dataset.source);
   });
 });
 </script>
