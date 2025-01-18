@@ -62,11 +62,7 @@ get '/files' => sub ($c) {
     my $subdir = $public->child($location);
     if ($subdir->exists) {
       if ($subdir->is_dir) {
-        my $iter = $subdir->iterator({ follow_symlinks => 1 });
-        while (my $path = $iter->()) {
-            $path =~ s/public\///;
-            push @$children, $path;
-        }
+        _dir_iter($subdir, $children);
       }
       else {
         $content = "Is a file! $subdir";
@@ -77,11 +73,7 @@ get '/files' => sub ($c) {
     }
   }
   else {
-    my $iter = $public->iterator({ follow_symlinks => 1 });
-    while (my $path = $iter->()) {
-        $path =~ s/public\///;
-        push @$children, $path;
-    }
+    _dir_iter($public, $children);
     $location = "JunkDrawer/$user";
   }
   $c->render(
@@ -91,6 +83,16 @@ get '/files' => sub ($c) {
     content  => $content,
   );
 } => 'files';
+
+sub _dir_iter {
+  my ($where, $children) = @_;
+  my $iter = $where->iterator({ follow_symlinks => 1 });
+  while (my $path = $iter->()) {
+      $path =~ s/public\///;
+      push @$children, $path;
+  }
+  return $children;
+}
 
 app->log->level('info');
 app->start;
