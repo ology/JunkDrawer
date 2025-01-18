@@ -194,7 +194,7 @@ __DATA__
 <ul>
 %   for my $child (@$children) {
   <li>
-    <a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a>
+    <a href="<%= $child->{path} %>"><%= $child->{name} %></a>
     <%= $child->{size} %> bytes <%= scalar localtime $child->{time} %>
   </li>
 %   }
