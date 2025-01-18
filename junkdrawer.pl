@@ -9,6 +9,8 @@ use Path::Tiny qw(path);
 use constant BACKUP   => 'JunkDrawer'; # named symlink to the backup
 use constant FILESIZE => 4_000_000;    # maximum allowed upload bytes
 
+plugin 'RenderFile';
+
 helper auth => sub {
   my $c = shift;
   my $user = $c->param('username');
@@ -62,13 +64,14 @@ get '/files' => sub ($c) {
   my $content = '';
   my $root = path('.');
   if ($location) {
+warn __PACKAGE__,' L',__LINE__,' ',,"$location\n";
     my $subdir = $root->child($location);
     if ($subdir->exists) {
       if ($subdir->is_dir) {
         _dir_iter($c, $subdir, $children);
       }
       else {
-        $content = "Is a file! $subdir";
+        return $c->render_file(filepath => $subdir->absolute);
       }
     }
     else {
@@ -194,7 +197,7 @@ __DATA__
 <ul>
 %   for my $child (@$children) {
   <li>
-    <a href="<%= $child->{path} %>"><%= $child->{name} %></a>
+    <a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a>
     <%= $child->{size} %> bytes <%= scalar localtime $child->{time} %>
   </li>
 %   }
