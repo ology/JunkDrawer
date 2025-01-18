@@ -119,9 +119,15 @@ sub _dir_iter {
   while (my $path = $iter->()) {
     my $backup = path(BACKUP, $user);
     (my $name = $path) =~ s/$backup\///;
-    push @$children, { name => $name, path => $path, size => -s $path }
-      unless $name =~ /^\./;
+    my @stat = stat $path;
+    push @$children, {
+      name => $name,
+      path => $path,
+      size => $stat[7],
+      time => $stat[9],
+    } unless $name =~ /^\./;
   }
+stat
   return $children;
 }
 
@@ -162,7 +168,10 @@ __DATA__
 <p>Items under <code><%= $place %>/</code>:</p>
 <ul>
 %   for my $child (@$children) {
-  <li><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a> <%= $child->{size} %> bytes</li>
+  <li>
+    <a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a>
+    <%= $child->{size} %> bytes <%= scalar localtime $child->{time} %>
+  </li>
 %   }
 </ul>
 % }
