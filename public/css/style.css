@@ -4,6 +4,10 @@
 .block {
   display: inline-block;
 }
+.smallBlack {
+  font-size: small;
+  color: black;
+}
 .small {
   font-size: small;
   color: darkgrey;
