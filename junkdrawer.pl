@@ -64,7 +64,7 @@ get '/files' => sub ($c) {
     my $subdir = $root->child($location);
     if ($subdir->exists) {
       if ($subdir->is_dir) {
-        _dir_iter($subdir, $children);
+        _dir_iter($c, $subdir, $children);
       }
       else {
         $content = "Is a file! $subdir";
@@ -76,7 +76,7 @@ get '/files' => sub ($c) {
   }
   else {
     $location = $root->child(BACKUP, $user);
-    _dir_iter($location, $children);
+    _dir_iter($c, $location, $children);
   }
   $c->render(
     template => 'files',
@@ -87,10 +87,13 @@ get '/files' => sub ($c) {
 } => 'files';
 
 sub _dir_iter {
-  my ($where, $children) = @_;
+  my ($c, $where, $children) = @_;
+  my $user = $c->session->{user};
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
-      push @$children, { path => $path, size => -s $path };
+      my $backup = path(BACKUP, $user);
+      (my $name = $path) =~ s/$backup\///;
+      push @$children, { name => $name, path => $path, size => -s $path };
   }
   return $children;
 }
@@ -126,7 +129,7 @@ __DATA__
 <p>Children of <code><%= $location %></code>:</p>
 <ul>
 %   for my $child (@$children) {
-  <li><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{path} %></a> <%= $child->{size} %> bytes</li>
+  <li><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a> <%= $child->{size} %> bytes</li>
 %   }
 </ul>
 % }
