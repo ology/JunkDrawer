@@ -53,15 +53,13 @@ under sub ($c) {
 
 get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
+  my @files;
   if ($location) {
-    push $c->static->paths->@*, 'public/tmp';
-    $c->static->serve_asset($c->static->paths->@*);
   }
-  else {
-    $c->render(
-      template => 'files',
-    );
-  }
+  $c->render(
+    template => 'files',
+    files    => \@files;
+  );
 } => 'files';
 
 app->log->level('info');
