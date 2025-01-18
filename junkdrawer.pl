@@ -75,10 +75,8 @@ get '/files' => sub ($c) {
     }
   }
   else {
-    my $backup = $root->child(BACKUP);
-    my $user_dir = $backup->child($user);
-    _dir_iter($user_dir, $children);
-    $location = path(BACKUP, $user);
+    $location = $root->child(BACKUP, $user);
+    _dir_iter($location, $children);
   }
   $c->render(
     template => 'files',
