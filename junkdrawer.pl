@@ -72,7 +72,7 @@ get '/files' => sub ($c) {
     }
   }
   else {
-    $content = "No such file or directory: '$location'";
+    $children = [ map { s/public\///; $_ } $public->children ];
   }
   $c->render(
     template => 'files',
@@ -110,7 +110,7 @@ __DATA__
 % if ($content) {
 <p><%= $content %></p>
 % } else {
-<p><b>Children of <%= $location %></b>:</p>
+<p><b>Children of</b> <code><%= $location %></code>:</p>
 <ul>
 %   for my $child (@$children) {
   <li><a href="<%= url_for('files')->query(location => $child) %>"><%= $child %></a></li>
