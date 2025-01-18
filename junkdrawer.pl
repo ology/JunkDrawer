@@ -6,7 +6,8 @@ use Crypt::Passphrase::Argon2 ();
 use Mojo::SQLite ();
 use Path::Tiny qw(path);
 
-use constant BACKUP => 'JunkDrawer'; # named symlink to the backup
+use constant BACKUP   => 'JunkDrawer'; # named symlink to the backup
+use constant FILESIZE => 4_000_000;    # maximum allowed upload bytes
 
 helper auth => sub {
   my $c = shift;
@@ -89,6 +90,27 @@ get '/files' => sub ($c) {
   );
 } => 'files';
 
+post '/files' => sub ($c) {
+  my $location = $c->param('location') || '';
+  my $root = path('.');
+  my $subdir = $root->child($location);
+  if ($subdir->exists && $subdir->is_dir) {
+    # $subdir->child('blah')->mkdir || die $!;
+    my $file = $c->req->upload('files');
+    if ($file->size > FILESIZE) {
+        $c->flash(error => 'File size too big');
+        return $c->redirect_to($c->url_for('files')->query(location => $location));
+    }
+    my $destination = $subdir->child($file->filename);
+    $file->move_to($destination);
+    unless (-e $destination) {
+        $c->flash(error => 'Something went wrong');
+        return $c->redirect_to($c->url_for('files')->query(location => $location));
+    }
+  }
+  $c->redirect_to($c->url_for('files')->query(location => $location));
+} => 'upload';
+
 sub _dir_iter {
   my ($c, $where, $children) = @_;
   my $user = $c->session->{user};
@@ -125,6 +147,10 @@ __DATA__
 % layout 'default';
 % title 'Junk::Drawer';
 <p>Upload, search, view, etc. forms</p>
+<form method="post">
+  <input type="hidden" name="location" value="<%= $location %>">
+  <button type="submit">Submit</button>
+</form>
 <hr>
 % if ($content) {
 <p><%= $content %></p>
