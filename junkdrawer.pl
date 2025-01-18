@@ -209,24 +209,16 @@ __DATA__
 <form action="<%= url_for('new_folder') %>" method="post">
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
-    <div class="col">
-      <input type="text" name="folder" class="form-control" placeholder="New folder">
-    </div>
-    <div class="col">
-      <button type="submit" class="btn btn-sm btn-primary">Create</button>
-    </div>
+    <input type="text" name="folder" class="form-control" placeholder="New folder">
+    <button type="submit" class="btn btn-sm btn-primary">Create</button>
   </div>
 </form>
 <p></p>
 <form method="post" enctype="multipart/form-data">
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
-    <div class="col">
-      <input type="file" id="file" name="file" class="form-control">
-    </div>
-    <div class="col">
-      <button type="submit" class="btn btn-sm btn-primary">Upload</button>
-    </div>
+    <input type="file" id="file" name="file" class="form-control">
+    <button type="submit" class="btn btn-sm btn-primary">Upload</button>
   </div>
 </form>
 % }
