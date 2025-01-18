@@ -142,7 +142,7 @@ sub _dir_iter {
       path => $path,
       size => $stat[7],
       time => $stat[9],
-    } unless $name =~ /^\./;
+    } unless $path->basename =~ /^\./;
   }
 stat
   return $children;
@@ -214,7 +214,7 @@ __DATA__
   <body>
     <div class="container">
       <p></p>
-      <h2><img src="/favicon.ico" height="32"> <a href="<%= url_for('index') %>" class="nounder"><%= title %></a></h2>
+      <h2><img src="/favicon.ico" height="32"> <%= title %></h2>
 <%= content %>
       <p></p>
       <div id="footer" class="text-muted small">
