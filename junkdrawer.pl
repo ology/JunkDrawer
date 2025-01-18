@@ -56,7 +56,8 @@ get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
   my $children = [];
   my $content = '';
-  my $public = path('public/JunkDrawer');
+  my $user = $c->session->{user};
+  my $public = path("public/JunkDrawer/$user");
   if ($location) {
     my $subdir = $public->child($location);
     if ($subdir->exists) {
@@ -81,7 +82,7 @@ get '/files' => sub ($c) {
         $path =~ s/public\///;
         push @$children, $path;
     }
-    $location = 'JunkDrawer';
+    $location = "JunkDrawer/$user";
   }
   $c->render(
     template => 'files',
