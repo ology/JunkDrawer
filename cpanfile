@@ -1,5 +1,6 @@
 requires 'Crypt::Passphrase';
 requires 'Crypt::Passphrase::Argon2';
-requires 'Mojolicious';
 requires 'Mojo::SQLite';
+requires 'Mojolicious';
+requires 'Mojolicious::Plugin::Directory';
 requires 'Term::ReadKey';
