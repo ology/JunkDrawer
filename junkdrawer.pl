@@ -214,7 +214,7 @@ __DATA__
   <body>
     <div class="container">
       <p></p>
-      <h2><img src="/favicon.ico" height="32"> <%= title %></h2>
+      <h2><%= title %></h2>
 <%= content %>
       <p></p>
       <div id="footer" class="text-muted small">
