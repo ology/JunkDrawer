@@ -113,7 +113,7 @@ __DATA__
 <p><b>Children of <%= $location %></b>:</p>
 <ul>
 %   for my $child (@$children) {
-  <li><%= $child %></li>
+  <li><a href="<%= url_for('files')->query(location => $child) %>"><%= $child %></a></li>
 %   }
 </ul>
 % }
