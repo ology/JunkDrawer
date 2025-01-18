@@ -236,7 +236,7 @@ __DATA__
 %   for my $child (@$children) {
 %     if ($child->{is_dir}) {
     <tr>
-      <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a></td>
+      <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %>/</a></td>
 %     } else {
       <td><button type="button" class="btn btn-clear item" data-source="<%= $child->{path} %>" data-bs-toggle="modal" data-bs-target="#saveModal"><%= $child->{name} %></a></td>
 %     }
