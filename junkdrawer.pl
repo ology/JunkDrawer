@@ -198,18 +198,28 @@ __DATA__
 % unless ($content) {
 <form action="<%= url_for('new_folder') %>" method="post">
   <input type="hidden" name="location" value="<%= $location %>">
-  <label for="folder"><b>New folder</b>:</label>
-  <input type="text" id="folder" name="folder" class="form-control">
-  <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+  <div class="row">
+    <div class="col">
+      <input type="text" name="folder" class="form-control" placeholder="New folder">
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+    </div>
 </form>
 <p></p>
 <form method="post" enctype="multipart/form-data">
   <input type="hidden" name="location" value="<%= $location %>">
-  <label for="file"><b>Upload file</b>:</label>
-  <input type="file" id="file" name="file" class="form-control">
-  <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+  <div class="row">
+    <div class="col">
+      <label for="file"><b>Upload file</b>:</label>
+      <input type="file" id="file" name="file" class="form-control">
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+    </div>
 </form>
 % }
+<p></p>
 <hr>
 % if ($content) {
 <p><%= $content %></p>
