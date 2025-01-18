@@ -147,7 +147,7 @@ __DATA__
 
 @@ files.html.ep
 % layout 'default';
-% title 'Junk::Drawer';
+% title 'Backup';
 <p>Upload, search, view, etc. forms</p>
 <form method="post">
   <input type="hidden" name="location" value="<%= $location %>">
