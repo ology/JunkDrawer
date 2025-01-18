@@ -137,7 +137,7 @@ sub _dir_iter {
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
     my $backup = path(BACKUP, $user);
-    (my $name = $path) =~ s/$backup\///;
+    my $name = $path->basename;
     my @stat = stat $path;
     push @$children, {
       is_dir => $path->is_dir ? 1 : 0,
@@ -231,7 +231,7 @@ __DATA__
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Folder or file</th>
+      <th scope="col">Item</th>
       <th scope="col">Size</th>
       <th scope="col">Date</th>
     </tr>
