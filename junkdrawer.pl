@@ -78,8 +78,11 @@ get '/files' => sub ($c) {
     $location = $root->child(BACKUP, $user);
     _dir_iter($c, $location, $children);
   }
+  my $backup = path(BACKUP);
+  (my $place = $location) =~ s/$backup\///;
   $c->render(
     template => 'files',
+    place    => $place,
     location => $location,
     children => $children,
     content  => $content,
@@ -126,7 +129,7 @@ __DATA__
 % if ($content) {
 <p><%= $content %></p>
 % } else {
-<p>Children of <code><%= $location %></code>:</p>
+<p>Items under <code><%= $place %>/</code>:</p>
 <ul>
 %   for my $child (@$children) {
   <li><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a> <%= $child->{size} %> bytes</li>
