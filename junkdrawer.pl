@@ -64,7 +64,6 @@ get '/files' => sub ($c) {
   my $content = '';
   my $root = path('.');
   if ($location) {
-warn __PACKAGE__,' L',__LINE__,' ',,"$location\n";
     my $subdir = $root->child($location);
     if ($subdir->exists) {
       if ($subdir->is_dir) {
