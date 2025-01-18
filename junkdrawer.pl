@@ -73,6 +73,7 @@ get '/files' => sub ($c) {
   }
   else {
     $children = [ map { s/public\///; $_ } $public->children ];
+    $location = '/';
   }
   $c->render(
     template => 'files',
