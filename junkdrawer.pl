@@ -168,9 +168,13 @@ __DATA__
     <div class="col">
       <input class="form-control" type="text" name="username" placeholder="Username">
     </div>
+  </div>
+  <div class="row">
     <div class="col">
       <input class="form-control" type="password" name="password" placeholder="Password">
     </div>
+  </div>
+  <div class="row">
     <div class="col">
       <input class="form-control btn btn-primary" type="submit" name="submit" value="Login">
     </div>
