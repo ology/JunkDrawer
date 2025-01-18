@@ -6,7 +6,7 @@ use Crypt::Passphrase::Argon2 ();
 use Mojo::SQLite ();
 use Path::Tiny qw(path);
 
-use constant BACKUP => 'JunkDrawer'; # named symlink in public/ to the backup
+use constant BACKUP => 'JunkDrawer'; # named symlink to the backup
 
 helper auth => sub {
   my $c = shift;
@@ -92,7 +92,6 @@ sub _dir_iter {
   my ($where, $children) = @_;
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
-      $path =~ s/public\///;
       push @$children, $path;
   }
   return $children;
