@@ -90,7 +90,7 @@ sub _dir_iter {
   my ($where, $children) = @_;
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
-      push @$children, $path;
+      push @$children, { path => $path, size => -s $path };
   }
   return $children;
 }
@@ -126,7 +126,7 @@ __DATA__
 <p>Children of <code><%= $location %></code>:</p>
 <ul>
 %   for my $child (@$children) {
-  <li><a href="<%= url_for('files')->query(location => $child) %>"><%= $child %></a></li>
+  <li><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{path} %></a> <%= $child->{size} %> bytes</li>
 %   }
 </ul>
 % }
