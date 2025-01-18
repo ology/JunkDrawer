@@ -4,7 +4,7 @@ use Mojolicious::Lite -signatures;
 use Crypt::Passphrase ();
 use Crypt::Passphrase::Argon2 ();
 use Mojo::SQLite ();
-use Path::Tiny ();
+use Path::Tiny qw(path);
 
 helper auth => sub {
   my $c = shift;
@@ -57,20 +57,26 @@ get '/files' => sub ($c) {
   my $children = [];
   my $content = '';
   my $public = path('public');
-  my $subdir = $public->child($location);
-  if ($subdir->exists) {
-    if ($subdir->is_dir) {
-      $children = [ $subdir->children ];
+  if ($location) {
+    my $subdir = $public->child($location);
+    if ($subdir->exists) {
+      if ($subdir->is_dir) {
+        $children = [ $subdir->children ];
+      }
+      else {
+        $content = "Is a file! $subdir";
+      }
     }
     else {
-      $content = "Is a file! $subdir";
+      $content = "No such file or directory: $subdir";
     }
   }
   else {
-    $content = "No such file or directory: $subdir";
+    $content = "No such file or directory: '$location'";
   }
   $c->render(
     template => 'files',
+    location => $location,
     children => $children,
     content  => $content,
   );
@@ -99,7 +105,18 @@ __DATA__
 @@ files.html.ep
 % layout 'default';
 % title 'Junk::Drawer';
-Choose or die!
+<p>Upload, search, view, etc. forms</p>
+<hr>
+% if ($content) {
+<p><%= $content %></p>
+% } else {
+<p><b>Children of <%= $location %></b>:</p>
+<ul>
+%   for my $child (@$children) {
+  <li><%= $child %></li>
+%   }
+</ul>
+% }
 
 @@ layouts/default.html.ep
 <!DOCTYPE html>
