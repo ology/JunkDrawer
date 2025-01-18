@@ -6,6 +6,8 @@ use Crypt::Passphrase::Argon2 ();
 use Mojo::SQLite ();
 use Path::Tiny qw(path);
 
+use constant BACKUP => 'JunkDrawer'; # named symlink in public/ to the backup
+
 helper auth => sub {
   my $c = shift;
   my $user = $c->param('username');
@@ -57,7 +59,7 @@ get '/files' => sub ($c) {
   my $children = [];
   my $content = '';
   my $user = $c->session->{user};
-  my $public = path("public/JunkDrawer/$user");
+  my $public = path('public', BACKUP, $user);
   if ($location) {
     my $subdir = $public->child($location);
     if ($subdir->exists) {
@@ -74,7 +76,7 @@ get '/files' => sub ($c) {
   }
   else {
     _dir_iter($public, $children);
-    $location = "JunkDrawer/$user";
+    $location = BACKUP . '/' . $user;
   }
   $c->render(
     template => 'files',
