@@ -3,6 +3,7 @@
 Static file server and backup storage app
 
 ```
+mkdir /Volumes/YourBackupDrive/backups/you
 git clone https://github.com/ology/JunkDrawer.git
 cd JunkDrawer
 ln -s /Volumes/YourBackupDrive/backups JunkDrawer
