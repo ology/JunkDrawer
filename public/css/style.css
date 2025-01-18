@@ -8,3 +8,6 @@
   font-size: small;
   color: darkgrey;
 }
+.invisible {
+  display: none;
+}
