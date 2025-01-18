@@ -203,7 +203,7 @@ __DATA__
       <input type="text" name="folder" class="form-control" placeholder="New folder">
     </div>
     <div class="col">
-      <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+      <button type="submit" class="btn btn-sm btn-primary">Create</button>
     </div>
 </form>
 <p></p>
@@ -211,11 +211,10 @@ __DATA__
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
     <div class="col">
-      <label for="file"><b>Upload file</b>:</label>
       <input type="file" id="file" name="file" class="form-control">
     </div>
     <div class="col">
-      <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+      <button type="submit" class="btn btn-sm btn-primary">Upload</button>
     </div>
 </form>
 % }
@@ -272,7 +271,7 @@ $(document).ready(function() {
   <body>
     <div class="container">
       <p></p>
-      <h2><%= title %></h2>
+      <h2><a href="<%= url_for('files') %>" class="nounder"><%= title %></a></h2>
 <%= content %>
       <p></p>
       <div id="footer" class="text-muted small">
