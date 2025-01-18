@@ -67,7 +67,7 @@ get '/files' => sub ($c) {
 app->log->level('info');
 app->start;
 
-__END__
+__DATA__
 
 @@ login.html.ep
 % layout 'default';
