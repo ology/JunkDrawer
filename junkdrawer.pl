@@ -84,12 +84,11 @@ __DATA__
   <input class="form-control btn btn-primary" type="submit" name="submit" value="Login">
 </form>
 
-@@ layouts/files.html.ep
+@@ files.html.ep
 % title 'Junk::Drawer';
 Choose or die!
 
 @@ layouts/default.html.ep
-% title 'Junk::Drawer';
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -104,6 +103,7 @@ Choose or die!
   <body>
     <div class="container">
       <p></p>
+      <h2><%= title %></h2>
 <%= content %>
       <p></p>
       <div id="footer" class="text-muted small">
