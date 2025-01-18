@@ -1,0 +1,13 @@
+.padpage {
+  padding-top: 10px;
+}
+.block {
+  display: inline-block;
+}
+.small {
+  font-size: small;
+  color: darkgrey;
+}
+.container {
+  max-width: 700px;
+}
