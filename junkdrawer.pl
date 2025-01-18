@@ -174,6 +174,24 @@ __DATA__
 @@ files.html.ep
 % layout 'default';
 % title 'Backup';
+<div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Save as...</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Save this file to your local drive?</p>
+        <code class="source"></code>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
 % unless ($content) {
 <form action="<%= url_for('new_folder') %>" method="post">
   <input type="hidden" name="location" value="<%= $location %>">
@@ -205,7 +223,7 @@ __DATA__
   <tbody>
 %   for my $child (@$children) {
     <tr class="<%= $child->{is_dir} ? '' : 'table-success' %>">
-      <td><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a></td>
+      <td><button type="button" class="btn btn-clear item" data-source="<%= $child->{path} %>" data-bs-toggle="modal" data-bs-target="#saveModal"><%= $child->{name} %></a></td>
       <td><%= $child->{size} %> bytes</td>
       <td><%= scalar localtime $child->{time} %></td>
     </tr>
@@ -213,6 +231,13 @@ __DATA__
   </tbody>
 </table>
 % }
+<script>
+$(document).ready(function() {
+  $('.item').click(function() {
+    $('.source').text(this.dataset.source);
+  });
+});
+</script>
 
 @@ layouts/default.html.ep
 <!DOCTYPE html>
