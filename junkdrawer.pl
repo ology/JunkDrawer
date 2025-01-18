@@ -196,7 +196,7 @@ __DATA__
         <code class="source"></code>
       </div>
       <div class="modal-footer">
-        <form method="get">
+        <form method="get" class="saveForm">
           <input type="hidden" class="location" name="location" value="">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Save</button>
@@ -256,6 +256,9 @@ $(document).ready(function() {
   $('.item').click(function() {
     $('.source').text(this.dataset.source);
     $('.location').val(this.dataset.source);
+  });
+  $('.saveForm').on('submit', function(e) {
+    $('#saveModal').modal('toggle');
   });
 });
 </script>
