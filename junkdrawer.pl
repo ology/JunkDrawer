@@ -54,16 +54,24 @@ under sub ($c) {
 
 get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
-  my $files = [];
+  my $children = [];
   my $content = '';
   my $public = path('public');
   my $subdir = $public->child($location);
   if ($subdir->exists) {
-    
+    if ($subdir->is_dir) {
+      $children = [ $subdir->children ];
+    }
+    else {
+      $content = "Is a file! $subdir";
+    }
+  }
+  else {
+    $content = "No such file or directory: $subdir";
   }
   $c->render(
     template => 'files',
-    files    => $files,
+    children => $children,
     content  => $content,
   );
 } => 'files';
