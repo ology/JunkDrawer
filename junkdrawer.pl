@@ -283,7 +283,6 @@ $(document).ready(function() {
         Built by <a href="http://www.ology.net/">Gene</a>
         with <a href="https://www.perl.org/">Perl</a> and
         <a href="https://mojolicious.org/">Mojolicious</a>
-        <br>
         | <a href="<%= url_for('logout') %>">Logout</a>
       </div>
       <p></p>
