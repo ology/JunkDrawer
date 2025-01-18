@@ -97,7 +97,7 @@ post '/files' => sub ($c) {
   my $subdir = $root->child($location);
   if ($subdir->exists && $subdir->is_dir) {
     # $subdir->child('blah')->mkdir || die $!;
-    my $file = $c->req->upload('files');
+    my $file = $c->req->upload('file');
     if ($file->size > FILESIZE) {
         $c->flash(error => 'File size too big');
         return $c->redirect_to($url);
@@ -149,9 +149,11 @@ __DATA__
 % layout 'default';
 % title 'Backup';
 <p>Upload, search, view, etc. forms</p>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
   <input type="hidden" name="location" value="<%= $location %>">
-  <button type="submit">Submit</button>
+  <label for="file"><b>Upload file</b>:</label>
+  <input type="file" id="file" name="file" class="form-control">
+  <button type="submit" class="btn btn-sm btn-primary">Submit</button>
 </form>
 <hr>
 % if ($content) {
