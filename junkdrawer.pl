@@ -164,11 +164,17 @@ __DATA__
 % }
 <p></p>
 <form action="<%= url_for('auth') %>" method="post">
-  <input class="form-control" type="text" name="username" placeholder="Username">
-  <br>
-  <input class="form-control" type="password" name="password" placeholder="Password">
-  <br>
-  <input class="form-control btn btn-primary" type="submit" name="submit" value="Login">
+  <div class="row">
+    <div class="col">
+      <input class="form-control" type="text" name="username" placeholder="Username">
+    </div>
+    <div class="col">
+      <input class="form-control" type="password" name="password" placeholder="Password">
+    </div>
+    <div class="col">
+      <input class="form-control btn btn-primary" type="submit" name="submit" value="Login">
+    </div>
+  </div>
 </form>
 
 @@ files.html.ep
@@ -205,6 +211,7 @@ __DATA__
     <div class="col">
       <button type="submit" class="btn btn-sm btn-primary">Create</button>
     </div>
+  </div>
 </form>
 <p></p>
 <form method="post" enctype="multipart/form-data">
@@ -216,6 +223,7 @@ __DATA__
     <div class="col">
       <button type="submit" class="btn btn-sm btn-primary">Upload</button>
     </div>
+  </div>
 </form>
 % }
 <p></p>
