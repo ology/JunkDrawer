@@ -61,7 +61,7 @@ get '/files' => sub ($c) {
     my $subdir = $public->child($location);
     if ($subdir->exists) {
       if ($subdir->is_dir) {
-        $children = [ $subdir->children ];
+        $children = [ map { s/public\///; $_ } $subdir->children ];
       }
       else {
         $content = "Is a file! $subdir";
