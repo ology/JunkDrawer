@@ -117,9 +117,10 @@ sub _dir_iter {
   my $user = $c->session->{user};
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
-      my $backup = path(BACKUP, $user);
-      (my $name = $path) =~ s/$backup\///;
-      push @$children, { name => $name, path => $path, size => -s $path };
+    my $backup = path(BACKUP, $user);
+    (my $name = $path) =~ s/$backup\///;
+    push @$children, { name => $name, path => $path, size => -s $path }
+      unless $name =~ /^\./;
   }
   return $children;
 }
