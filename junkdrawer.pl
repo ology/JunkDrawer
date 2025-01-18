@@ -206,7 +206,7 @@ __DATA__
   </div>
 </div>
 % unless ($content) {
-<form action="<%= url_for('new_folder') %>" method="post">
+<form action="<%= url_for('new_folder') %>" method="post" class="padLR">
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
     <input type="text" name="folder" class="form-control" placeholder="New folder">
@@ -214,7 +214,7 @@ __DATA__
   </div>
 </form>
 <p></p>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="padLR">
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
     <input type="file" id="file" name="file" class="form-control">
