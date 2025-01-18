@@ -140,10 +140,11 @@ sub _dir_iter {
     (my $name = $path) =~ s/$backup\///;
     my @stat = stat $path;
     push @$children, {
-      name => $name,
-      path => $path,
-      size => $stat[7],
-      time => $stat[9],
+      is_dir => $path->is_dir ? 1 : 0,
+      name   => $name,
+      path   => $path,
+      size   => $stat[7],
+      time   => $stat[9],
     } unless $path->basename =~ /^\./;
   }
 stat
@@ -203,7 +204,7 @@ __DATA__
   </thead>
   <tbody>
 %   for my $child (@$children) {
-    <tr>
+    <tr class="<%= $child->{is_dir} ? '' : 'table-success' %>">
       <td><a href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %></a></td>
       <td><%= $child->{size} %> bytes</td>
       <td><%= scalar localtime $child->{time} %></td>
