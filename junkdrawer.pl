@@ -196,7 +196,7 @@ __DATA__
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Path</th>
+      <th scope="col">Folder or file</th>
       <th scope="col">Size</th>
       <th scope="col">Date</th>
     </tr>
