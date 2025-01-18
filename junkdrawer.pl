@@ -61,7 +61,6 @@ get '/files' => sub ($c) {
   my $content = '';
   my $root = path('.');
   my $backup = $root->child(BACKUP);
-  my $user_dir = $backup->child($user);
   if ($location) {
     my $subdir = $root->child($location);
     if ($subdir->exists) {
@@ -77,6 +76,7 @@ get '/files' => sub ($c) {
     }
   }
   else {
+    my $user_dir = $backup->child($user);
     _dir_iter($user_dir, $children);
     $location = path(BACKUP, $user);
   }
