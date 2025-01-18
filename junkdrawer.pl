@@ -56,12 +56,14 @@ under sub ($c) {
 
 get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
+  my $user = $c->session->{user};
   my $children = [];
   my $content = '';
-  my $user = $c->session->{user};
-  my $public = path('public', BACKUP, $user);
+  my $root = path('.');
+  my $backup = $root->child(BACKUP);
+  my $user_dir = $backup->child($user);
   if ($location) {
-    my $subdir = $public->child($location);
+    my $subdir = $root->child($location);
     if ($subdir->exists) {
       if ($subdir->is_dir) {
         _dir_iter($subdir, $children);
@@ -75,8 +77,8 @@ get '/files' => sub ($c) {
     }
   }
   else {
-    _dir_iter($public, $children);
-    $location = BACKUP . '/' . $user;
+    _dir_iter($user_dir, $children);
+    $location = path(BACKUP, $user);
   }
   $c->render(
     template => 'files',
