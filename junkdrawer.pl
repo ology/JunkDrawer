@@ -122,7 +122,7 @@ post '/files' => sub ($c) {
 post '/new_folder' => sub ($c) {
   my $v = $c->validation;
   $v->required('location');
-  $v->required('folder')->like(qr/^\w+$/);
+  $v->required('folder')->like(qr/^[\w-]+$/);
   if ($v->has_error) {
     $c->flash(error => 'Invalid submission');
     return $c->redirect_to('files');
