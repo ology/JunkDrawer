@@ -4,6 +4,9 @@
 .block {
   display: inline-block;
 }
+.textBlack {
+  color: black;
+}
 .smallBlack {
   font-size: small;
   color: black;
