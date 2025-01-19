@@ -58,7 +58,7 @@ under sub ($c) {
 
 get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
-  my $sort = $c->param('sort') || 'item';
+  my $sort_by = $c->param('sort_by') || 'item';
   my $user = $c->session->{user};
   my $children = [];
   my $content = '';
@@ -89,7 +89,7 @@ get '/files' => sub ($c) {
     location => $location,
     children => $children,
     content  => $content,
-    sort     => $sort,
+    sort_by  => $sort_by,
   );
 } => 'files';
 
@@ -242,20 +242,20 @@ __DATA__
 <table class="table">
   <thead>
     <tr>
-      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'item') %>" class="nounder padLR">Item</a></th>
-      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'size') %>" class="nounder">Size</a></th>
-      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'date') %>" class="nounder">Date</a></th>
+      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort_by => 'item') %>" class="nounder padLR">Item</a></th>
+      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort_by => 'size') %>" class="nounder">Size</a></th>
+      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort_by => 'date') %>" class="nounder">Date</a></th>
     </tr>
   </thead>
   <tbody>
 %   my @sorted;
-%   if ($sort eq 'item') {
+%   if ($sort_by eq 'item') {
 %     @sorted = sort { fc($a->{name}) cmp fc($b->{name}) } @$children;
 %   }
-%   elsif ($sort eq 'size') {
+%   elsif ($sort_by eq 'size') {
 %     @sorted = sort { $a->{bytes} <=> $b->{bytes} || fc($a->{name}) cmp fc($b->{name}) } @$children;
 %   }
-%   elsif ($sort eq 'date') {
+%   elsif ($sort_by eq 'date') {
 %     @sorted = sort { $a->{time} <=> $b->{time} || fc($a->{name}) cmp fc($b->{name}) } @$children;
 %   }
 %   for my $child (@sorted) {
