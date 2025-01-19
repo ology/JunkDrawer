@@ -58,6 +58,8 @@ under sub ($c) {
 
 get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
+  my $sort = $c->param('sort') || 'item';
+  my $direction = $c->param('direction') || 1;
   my $user = $c->session->{user};
   my $children = [];
   my $content = '';
@@ -83,11 +85,13 @@ get '/files' => sub ($c) {
   my $backup = path(BACKUP);
   (my $place = $location) =~ s/$backup\///;
   $c->render(
-    template => 'files',
-    place    => $place,
-    location => $location,
-    children => $children,
-    content  => $content,
+    template  => 'files',
+    place     => $place,
+    location  => $location,
+    children  => $children,
+    content   => $content,
+    sort      => $sort,
+    direction => $direction,
   );
 } => 'files';
 
@@ -228,13 +232,17 @@ __DATA__
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Item</th>
-      <th scope="col">Size</th>
-      <th scope="col">Date</th>
+      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'item', direction => 1) %>">Item</a></th>
+      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'size', direction => 1) %>">Size</a></th>
+      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'date', direction => 1) %>">Date</a></th>
     </tr>
   </thead>
   <tbody>
-%   for my $child (sort { fc($a->{name}) cmp fc($b->{name}) } @$children) {
+%   my @sorted;
+%   if ($sort eq 'item' && $direction) {
+%     @sorted = sort { fc($a->{name}) cmp fc($b->{name}) } @$children;
+%   }
+%   for my $child (@sorted) {
 %     if ($child->{is_dir}) {
     <tr>
       <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %>/</a></td>
