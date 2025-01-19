@@ -234,7 +234,7 @@ __DATA__
     </tr>
   </thead>
   <tbody>
-%   for my $child (@$children) {
+%   for my $child (sort { fc($a->{name}) cmp fc($b->{name}) } @$children) {
 %     if ($child->{is_dir}) {
     <tr>
       <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %>/</a></td>
