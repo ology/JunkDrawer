@@ -115,13 +115,18 @@ post '/files' => sub ($c) {
 } => 'upload';
 
 post '/new_folder' => sub ($c) {
-  my $location = $c->param('location') || '';
-  my $folder = $c->param('folder') || '';
-  my $url = $c->url_for('files')->query(location => $location);
+  my $v = $c->validation;
+  $v->required('location');
+  $v->required('folder')->like(qr/^\w+$/);
+  if ($v->has_error) {
+    $c->flash(error => 'Invalid submission');
+    return $c->redirect_to('files');
+  }
+  my $url = $c->url_for('files')->query(location => $v->param('location'));
   my $root = path('.');
-  my $subdir = $root->child($location);
+  my $subdir = $root->child($v->param('location'));
   if ($subdir->exists && $subdir->is_dir) {
-    my $destination = $subdir->child($folder);
+    my $destination = $subdir->child($v->param('folder'));
     $destination->mkdir || die $!;
     unless ($destination->exists) {
         $c->flash(error => 'Something went wrong');
