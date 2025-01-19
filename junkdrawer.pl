@@ -106,14 +106,14 @@ post '/files' => sub ($c) {
   if ($subdir->exists && $subdir->is_dir) {
     my $file = $c->req->upload('file');
     if ($file->size > FILESIZE) {
-        $c->flash(error => 'File size too big');
-        return $c->redirect_to($url);
+      $c->flash(error => 'File size too big');
+      return $c->redirect_to($url);
     }
     my $destination = $subdir->child($file->filename);
     $file->move_to($destination);
     unless ($destination->exists) {
-        $c->flash(error => 'Something went wrong');
-        return $c->redirect_to($url);
+      $c->flash(error => 'Something went wrong');
+      return $c->redirect_to($url);
     }
   }
   return $c->redirect_to($url);
