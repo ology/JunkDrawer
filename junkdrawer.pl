@@ -229,7 +229,7 @@ __DATA__
 <table class="table">
   <thead>
     <tr>
-      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'item') %>" class="nounder">Item</a></th>
+      <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'item') %>" class="nounder padLR">Item</a></th>
       <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'size') %>" class="nounder">Size</a></th>
       <th scope="col"><a href="<%= url_for('files')->query(location => $location, sort => 'date') %>" class="nounder">Date</a></th>
     </tr>
