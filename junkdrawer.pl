@@ -8,7 +8,7 @@ use Number::Format ();
 use Path::Tiny qw(path);
 
 use constant BACKUP   => 'Backup'; # named symlink to the backup
-use constant FILESIZE => 100_000_000;  # maximum allowed upload bytes
+use constant FILESIZE => 100_000_000; # maximum allowed upload bytes
 
 plugin 'RenderFile';
 
