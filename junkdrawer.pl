@@ -6,7 +6,7 @@ use Crypt::Passphrase::Argon2 ();
 use Mojo::SQLite ();
 use Path::Tiny qw(path);
 
-use constant BACKUP   => 'JunkDrawer'; # named symlink to the backup
+use constant BACKUP   => 'Backup'; # named symlink to the backup
 use constant FILESIZE => 100_000_000;  # maximum allowed upload bytes
 
 plugin 'RenderFile';
