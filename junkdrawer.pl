@@ -287,7 +287,7 @@ $(document).ready(function() {
   <body>
     <div class="container">
       <p></p>
-      <h2><a href="<%= url_for('files') %>" class="nounder"><%= title %></a></h2>
+      <h2><a href="<%= url_for('files') %>" class="nounder textBlack"><%= title %></a></h2>
 <%= content %>
       <p></p>
       <div id="footer" class="text-muted small">
