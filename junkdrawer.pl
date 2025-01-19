@@ -94,6 +94,12 @@ get '/files' => sub ($c) {
 } => 'files';
 
 post '/files' => sub ($c) {
+  my $v = $c->validation;
+  $v->required('location');
+  if ($v->has_error) {
+    $c->flash(error => 'Invalid submission');
+    return $c->redirect_to('files');
+  }
   my $location = $c->param('location') || '';
   my $url = $c->url_for('files')->query(location => $location);
   my $root = path('.');
