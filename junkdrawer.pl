@@ -138,11 +138,11 @@ sub _dir_iter {
   while (my $path = $iter->()) {
     my $stat = $path->stat;
     push @$children, {
-      is_dir => $path->is_dir ? 1 : 0,
       name   => $path->basename,
       path   => $path,
       size   => $stat->[7],
       time   => $stat->[9],
+      is_dir => $path->is_dir ? 1 : 0,
     } unless $path->basename =~ /^\./;
   }
   return $children;
