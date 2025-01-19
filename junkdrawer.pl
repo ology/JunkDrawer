@@ -31,9 +31,7 @@ helper auth => sub {
 
 get '/' => sub { shift->redirect_to('login') } => 'index';
 
-get '/login' => sub ($c) {
-  $c->render(template => 'login');
-} => 'login';
+get '/login' => sub { shift->render } => 'login';
 
 post '/login' => sub ($c) {
   if ($c->auth) {
