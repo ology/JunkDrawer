@@ -145,7 +145,6 @@ sub _dir_iter {
       time   => $stat->[9],
     } unless $path->basename =~ /^\./;
   }
-stat
   return $children;
 }
 
