@@ -187,6 +187,9 @@ __DATA__
 @@ files.html.ep
 % layout 'default';
 % title 'Backup';
+% if (flash('error')) {
+  <h2 style="color:red"><%= flash('error') %></h2>
+% }
 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
