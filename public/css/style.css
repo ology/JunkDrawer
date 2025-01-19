@@ -4,6 +4,9 @@
 .block {
   display: inline-block;
 }
+.textRed {
+  color: red;
+}
 .textBlack {
   color: black;
 }
