@@ -4,6 +4,7 @@ use Mojolicious::Lite -signatures;
 use Crypt::Passphrase ();
 use Crypt::Passphrase::Argon2 ();
 use Mojo::SQLite ();
+use Number::Format ();
 use Path::Tiny qw(path);
 
 use constant BACKUP   => 'Backup'; # named symlink to the backup
@@ -131,14 +132,14 @@ post '/new_folder' => sub ($c) {
 
 sub _dir_iter {
   my ($c, $where, $children) = @_;
-  my $user = $c->session->{user};
+  my $nf = Number::Format->new;
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
     my $stat = $path->stat;
     push @$children, {
       name   => $path->basename,
       path   => $path,
-      size   => $stat->[7],
+      size   => $nf->format_bytes($stat->[7]),
       time   => $stat->[9],
       is_dir => $path->is_dir ? 1 : 0,
     } unless $path->basename =~ /^\./;
