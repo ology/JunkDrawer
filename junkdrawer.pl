@@ -7,7 +7,7 @@ use Mojo::SQLite ();
 use Path::Tiny qw(path);
 
 use constant BACKUP   => 'JunkDrawer'; # named symlink to the backup
-use constant FILESIZE => 10_000_000;    # maximum allowed upload bytes
+use constant FILESIZE => 10_000_000;   # maximum allowed upload bytes
 
 plugin 'RenderFile';
 
