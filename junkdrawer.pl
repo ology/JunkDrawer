@@ -140,6 +140,7 @@ sub _dir_iter {
       name   => $path->basename,
       path   => $path,
       size   => $nf->format_bytes($stat->[7]),
+      bytes  => $stat->[7],
       time   => $stat->[9],
       is_dir => $path->is_dir ? 1 : 0,
     } unless $path->basename =~ /^\./;
