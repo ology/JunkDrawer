@@ -246,8 +246,8 @@ __DATA__
 %     @sorted = sort { $a->{time} <=> $b->{time} || fc($a->{name}) cmp fc($b->{name}) } @$children;
 %   }
 %   for my $child (@sorted) {
-%     if ($child->{is_dir}) {
     <tr>
+%     if ($child->{is_dir}) {
       <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %>/</a></td>
       <td>&nbsp;</td>
 %     } else {
