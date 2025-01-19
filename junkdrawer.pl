@@ -99,7 +99,6 @@ post '/files' => sub ($c) {
   my $root = path('.');
   my $subdir = $root->child($location);
   if ($subdir->exists && $subdir->is_dir) {
-    # $subdir->child('blah')->mkdir || die $!;
     my $file = $c->req->upload('file');
     if ($file->size > FILESIZE) {
         $c->flash(error => 'File size too big');
