@@ -100,10 +100,9 @@ post '/files' => sub ($c) {
     $c->flash(error => 'Invalid submission');
     return $c->redirect_to('files');
   }
-  my $location = $c->param('location') || '';
-  my $url = $c->url_for('files')->query(location => $location);
+  my $url = $c->url_for('files')->query(location => $v->param('location'));
   my $root = path('.');
-  my $subdir = $root->child($location);
+  my $subdir = $root->child($v->param('location'));
   if ($subdir->exists && $subdir->is_dir) {
     my $file = $c->req->upload('file');
     if ($file->size > FILESIZE) {
