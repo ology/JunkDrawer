@@ -136,7 +136,6 @@ sub _dir_iter {
   my $user = $c->session->{user};
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
-    my $backup = path(BACKUP, $user);
     my @stat = stat $path;
     push @$children, {
       is_dir => $path->is_dir ? 1 : 0,
