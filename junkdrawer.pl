@@ -168,7 +168,7 @@ __DATA__
 % layout 'default';
 % title 'Login';
 % if (flash('error')) {
-  <h2 style="color:red"><%= flash('error') %></h2>
+  <h2 class="textRed"><%= flash('error') %></h2>
 % }
 <p></p>
 <form action="<%= url_for('auth') %>" method="post">
@@ -193,7 +193,7 @@ __DATA__
 % layout 'default';
 % title 'Backup';
 % if (flash('error')) {
-  <h2 style="color:red"><%= flash('error') %></h2>
+  <h2 class="textRed"><%= flash('error') %></h2>
 % }
 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
   <div class="modal-dialog">
