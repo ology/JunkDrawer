@@ -136,13 +136,13 @@ sub _dir_iter {
   my $user = $c->session->{user};
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
-    my @stat = stat $path;
+    my $stat = $path->stat;
     push @$children, {
       is_dir => $path->is_dir ? 1 : 0,
       name   => $path->basename,
       path   => $path,
-      size   => $stat[7],
-      time   => $stat[9],
+      size   => $stat->[7],
+      time   => $stat->[9],
     } unless $path->basename =~ /^\./;
   }
 stat
