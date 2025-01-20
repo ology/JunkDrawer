@@ -61,7 +61,6 @@ get '/files' => sub ($c) {
   my $sort_by = $c->param('sort_by') || 'item';
   my $user = $c->session->{user};
   my $children = [];
-  my $content = '';
   my $root = path('.');
   if ($location) {
     my $subdir = $root->child($location);
@@ -74,7 +73,8 @@ get '/files' => sub ($c) {
       }
     }
     else {
-      $content = "No such file or directory: $subdir";
+      $c->flash('error' => "No such file or directory: $subdir");
+      return $c->redirect_to($c->url_for('files')->query(location => $location));
     }
   }
   else {
@@ -85,11 +85,10 @@ get '/files' => sub ($c) {
   (my $place = $location) =~ s/$backup\///;
   $c->render(
     template => 'files',
-    place    => $place,
-    location => $location,
-    children => $children,
-    content  => $content,
-    sort_by  => $sort_by,
+    place    => $place,    # backups without symlink
+    location => $location, # symlinked backups
+    children => $children, # location items
+    sort_by  => $sort_by,  # sort column
   );
 } => 'files';
 
@@ -216,7 +215,6 @@ __DATA__
     </div>
   </div>
 </div>
-% unless ($content) {
 <form action="<%= url_for('new_folder') %>" method="post" class="padLR">
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
@@ -232,12 +230,8 @@ __DATA__
     <button type="submit" class="btn btn-sm btn-primary">Upload</button>
   </div>
 </form>
-% }
 <p></p>
 <hr>
-% if ($content) {
-<p><%= $content %></p>
-% } else {
 <p>Items under <code><%= $place %>/</code>:</p>
 <table class="table">
   <thead>
@@ -272,7 +266,6 @@ __DATA__
 %   }
   </tbody>
 </table>
-% }
 <script>
 $(document).ready(function() {
   $('.item').click(function() {
