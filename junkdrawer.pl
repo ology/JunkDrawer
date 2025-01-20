@@ -8,7 +8,10 @@ use Number::Format ();
 use Path::Tiny qw(path);
 
 use constant BACKUP   => 'Backup'; # named symlink to the backup
-use constant FILESIZE => 900_000_000; # maximum allowed upload bytes
+use constant FILESIZE => 1 * 1024 * 1024 * 1024; # maximum allowed upload bytes
+BEGIN {
+  $ENV{MOJO_MAX_MESSAGE_SIZE} = 1 * 1024 * 1024 * 1024; # 2 GB
+};
 
 plugin 'RenderFile';
 
