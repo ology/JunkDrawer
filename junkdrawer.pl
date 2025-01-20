@@ -97,6 +97,7 @@ get '/files' => sub ($c) {
 } => 'files';
 
 post '/files' => sub ($c) {
+  # TODO capture uploads that were too big by checking $self->req->error for a 413 and then send a friendly error message
   my $v = $c->validation;
   $v->required('location');
   if ($v->has_error) {
