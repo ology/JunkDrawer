@@ -89,9 +89,10 @@ get '/files' => sub ($c) {
   $c->render(
     template => 'files',
     place    => $place,    # backups without symlink
-    location => $location, # symlinked backups
+    location => path($location), # symlinked backups
     children => $children, # location items
     sort_by  => $sort_by,  # sort column
+    user     => $user,
   );
 } => 'files';
 
@@ -254,6 +255,12 @@ __DATA__
 %   }
 %   elsif ($sort_by eq 'date') {
 %     @sorted = sort { $a->{time} <=> $b->{time} || fc($a->{name}) cmp fc($b->{name}) } @$children;
+%   }
+%   unless ($location =~ /$user$/) {
+    <tr>
+      <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $location->parent) %>">../</a></td>
+      <td>&nbsp;</td>
+    </tr>
 %   }
 %   for my $child (@sorted) {
     <tr>
