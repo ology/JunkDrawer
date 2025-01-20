@@ -260,6 +260,7 @@ __DATA__
     <tr>
       <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $location->parent) %>">../</a></td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
 %   }
 %   for my $child (@sorted) {
