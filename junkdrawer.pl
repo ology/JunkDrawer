@@ -107,7 +107,7 @@ get '/search' => sub ($c) {
   if ($search) {
     my $root = path($location);
     @children = File::Find::Rule
-      ->name(qr/$search/i)
+      ->name(qr/\Q$search/i)
       ->in($root);
   }
   my $backup = path(BACKUP);
