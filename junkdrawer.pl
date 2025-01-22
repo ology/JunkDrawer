@@ -106,10 +106,9 @@ get '/search' => sub ($c) {
   my $nf = Number::Format->new;
   my $children = [];
   if ($search) {
-    my $root = path($location);
     my @results = File::Find::Rule
       ->name(qr/\Q$search/i)
-      ->in($root);
+      ->in($location);
     for my $child (@results) {
       my $path = path($child);
       my $stat = $path->stat;
