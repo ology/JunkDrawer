@@ -3,6 +3,7 @@ use Mojolicious::Lite -signatures;
  
 use Crypt::Passphrase ();
 use Crypt::Passphrase::Argon2 ();
+use File::Find::Rule ();
 use Mojo::SQLite ();
 use Number::Format ();
 use Path::Tiny qw(path);
@@ -93,8 +94,35 @@ get '/files' => sub ($c) {
     children => $children, # location items
     sort_by  => $sort_by,  # sort column
     user     => $user,
+    results  => [],
   );
 } => 'files';
+
+get '/search' => sub ($c) {
+  my $location = $c->param('location') || '';
+  my $sort_by = $c->param('sort_by') || 'item';
+  my $search = $c->param('search') || '';
+  my $user = $c->session->{user};
+  my @children;
+  if ($search) {
+    my $root = path($location);
+    @children = File::Find::Rule
+      ->file()
+      ->name(qr/$search/i)
+      ->in($root);
+  }
+  my $backup = path(BACKUP);
+  (my $place = $location) =~ s/$backup\///;
+  $c->render(
+    template => 'files',
+    place    => $place,    # backups without symlink
+    location => path($location), # symlinked backups
+    children => [], # location items
+    sort_by  => $sort_by,  # sort column
+    user     => $user,
+    results  => \@children,
+  );
+} => 'search';
 
 post '/files' => sub ($c) {
   # TODO capture uploads that are too big by checking $self->req->error for 413 and send a friendly error message
@@ -220,10 +248,18 @@ __DATA__
     </div>
   </div>
 </div>
+<form action="<%= url_for('search') %>" method="get" class="padLR">
+  <input type="hidden" name="location" value="<%= $location %>">
+  <div class="row">
+    <input type="text" name="search" class="form-control" placeholder="Filename" required>
+    <button type="submit" class="btn btn-sm btn-primary">Search</button>
+  </div>
+</form>
+<p></p>
 <form action="<%= url_for('new_folder') %>" method="post" class="padLR">
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
-    <input type="text" name="folder" class="form-control" placeholder="New folder" required>
+    <input type="text" name="folder" class="form-control" placeholder="Folder" required>
     <button type="submit" class="btn btn-sm btn-primary">Create</button>
   </div>
 </form>
@@ -237,6 +273,10 @@ __DATA__
 </form>
 <p></p>
 <hr>
+% if (@$results) {
+<%== join '<br>', @$results  %>
+% }
+% else {
 <p>Items under <code><%= $place %>/</code>:</p>
 <table class="table">
   <thead>
@@ -278,6 +318,7 @@ __DATA__
 %   }
   </tbody>
 </table>
+% }
 <script>
 $(document).ready(function() {
   $('.item').click(function() {
