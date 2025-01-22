@@ -107,7 +107,6 @@ get '/search' => sub ($c) {
   if ($search) {
     my $root = path($location);
     @children = File::Find::Rule
-      ->file()
       ->name(qr/$search/i)
       ->in($root);
   }
