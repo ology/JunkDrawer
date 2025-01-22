@@ -103,12 +103,25 @@ get '/search' => sub ($c) {
   my $sort_by = $c->param('sort_by') || 'item';
   my $search = $c->param('search') || '';
   my $user = $c->session->{user};
-  my @children;
+  my $nf = Number::Format->new;
+  my $children = [];
   if ($search) {
     my $root = path($location);
-    @children = File::Find::Rule
+    my @results = File::Find::Rule
       ->name(qr/\Q$search/i)
       ->in($root);
+    for my $child (@results) {
+      my $path = path($child);
+      my $stat = $path->stat;
+      push @$children, {
+        name   => $path->basename,
+        path   => $path,
+        size   => $nf->format_bytes($stat->[7]),
+        bytes  => $stat->[7],
+        time   => $stat->[9],
+        is_dir => $path->is_dir ? 1 : 0,
+      } unless $path->basename =~ /^\./;
+    }
   }
   my $backup = path(BACKUP);
   (my $place = $location) =~ s/$backup\///;
@@ -116,10 +129,9 @@ get '/search' => sub ($c) {
     template => 'files',
     place    => $place,    # backups without symlink
     location => path($location), # symlinked backups
-    children => [], # location items
+    children => $children, # location items
     sort_by  => $sort_by,  # sort column
     user     => $user,
-    results  => \@children,
   );
 } => 'search';
 
@@ -272,10 +284,6 @@ __DATA__
 </form>
 <p></p>
 <hr>
-% if (@$results) {
-<%== join '<br>', @$results  %>
-% }
-% else {
 <p>Items under <code><%= $place %>/</code>:</p>
 <table class="table">
   <thead>
@@ -317,7 +325,6 @@ __DATA__
 %   }
   </tbody>
 </table>
-% }
 <script>
 $(document).ready(function() {
   $('.item').click(function() {
