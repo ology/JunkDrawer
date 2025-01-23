@@ -215,15 +215,12 @@ post '/new_folder' => sub ($c) {
 
 sub _dir_iter {
   my ($c, $where, $children) = @_;
-  my $user = $c->session->{user};
-  my $backup = path(BACKUP);
   my $nf = Number::Format->new;
   my $iter = $where->iterator({ follow_symlinks => 1 });
   while (my $path = $iter->()) {
-    (my $place = $path) =~ s/$backup\/$user\///;
     my $stat = $path->stat;
     push @$children, {
-      name   => $place,
+      name   => $path->basename,
       path   => $path,
       size   => $nf->format_bytes($stat->[7]),
       bytes  => $stat->[7],
