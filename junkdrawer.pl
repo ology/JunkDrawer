@@ -223,7 +223,7 @@ sub _dir_iter {
     my $stat = $path->stat;
     push @$children, {
       name   => $path->basename,
-      folder => '',
+      locus  => '',
       path   => $path,
       size   => $nf->format_bytes($stat->[7]),
       bytes  => $stat->[7],
