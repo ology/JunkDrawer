@@ -324,7 +324,7 @@ __DATA__
 %   }
 %   $i++;
 % }
-:</p>
+  :</p>
 <table class="table">
   <thead>
     <tr>
