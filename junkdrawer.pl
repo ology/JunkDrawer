@@ -126,11 +126,11 @@ get '/search' => sub ($c) {
       ->in($location);
     for my $child (@results) {
       my $path = path($child);
-      (my $place = $path) =~ s/\Q$location\///;
+      (my $locus = $path) =~ s/\Q$location\///;
       my $stat = $path->stat;
       push @$children, {
         name   => $path->basename,
-        folder => $place,
+        locus  => $locus,
         path   => $path,
         size   => $nf->format_bytes($stat->[7]),
         bytes  => $stat->[7],
@@ -356,7 +356,7 @@ __DATA__
     </tr>
 %   }
 %   for my $child (@sorted) {
-%     my $name = $search ? $child->{folder} : $child->{name};
+%     my $name = $search ? $child->{locus} : $child->{name};
     <tr>
 %     if ($child->{is_dir}) {
       <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $name %>/</a></td>
