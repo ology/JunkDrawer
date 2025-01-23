@@ -313,17 +313,18 @@ __DATA__
 </form>
 <p></p>
 <hr>
-<p><b>Items under</b> &nbsp;
+<p><b>Items under</b> &nbsp; <code>
 % my $i = 0;
 % for my $crumb (@$places) {
 %   if ($i >= @$places - 1) {
-  <code><%= $crumb %>/</code>
+  <%= $crumb %>/
 %   }
 %   else {
-  <code><a href="<%= url_for('files')->query(location => $crumbs->{$crumb}) %>"><%= $crumb %></a>/</code>
+  <a href="<%= url_for('files')->query(location => $crumbs->{$crumb}) %>"><%= $crumb %></a>/
 %   }
 %   $i++;
 % }
+  </code>
   :</p>
 <table class="table">
   <thead>
