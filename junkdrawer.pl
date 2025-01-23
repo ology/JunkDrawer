@@ -118,6 +118,7 @@ get '/search' => sub ($c) {
   my $sort_by = $c->param('sort_by') || 'item';
   my $search = $c->param('search') || '';
   my $user = $c->session->{user};
+  my $backup = path(BACKUP, $user);
   my $nf = Number::Format->new;
   my $children = [];
   if ($search) {
@@ -126,9 +127,11 @@ get '/search' => sub ($c) {
       ->in($location);
     for my $child (@results) {
       my $path = path($child);
+      (my $place = $path) =~ s/\Q$backup\///;
       my $stat = $path->stat;
       push @$children, {
         name   => $path->basename,
+        folder => $place,
         path   => $path,
         size   => $nf->format_bytes($stat->[7]),
         bytes  => $stat->[7],
@@ -137,8 +140,8 @@ get '/search' => sub ($c) {
       } unless $path->basename =~ /^\./;
     }
   }
-  my $backup = path(BACKUP);
-  (my $place = $location) =~ s/$backup\///;
+  $backup = path(BACKUP);
+  (my $place = $location) =~ s/\Q$backup\///;
   my %places;
   my @places = split '/', $place;
   my $tally = '';
@@ -221,6 +224,7 @@ sub _dir_iter {
     my $stat = $path->stat;
     push @$children, {
       name   => $path->basename,
+      folder => '',
       path   => $path,
       size   => $nf->format_bytes($stat->[7]),
       bytes  => $stat->[7],
@@ -353,12 +357,13 @@ __DATA__
     </tr>
 %   }
 %   for my $child (@sorted) {
+%     my $name = $search ? $child->{folder} : $child->{name};
     <tr>
 %     if ($child->{is_dir}) {
-      <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $child->{name} %>/</a></td>
+      <td><a class="btn btn-clear" href="<%= url_for('files')->query(location => $child->{path}) %>"><%= $name %>/</a></td>
       <td>&nbsp;</td>
 %     } else {
-      <td><button type="button" class="btn btn-clear item" data-source="<%= $child->{path} %>" data-bs-toggle="modal" data-bs-target="#saveModal"><%= $child->{name} %></a></td>
+      <td><button type="button" class="btn btn-clear item" data-source="<%= $child->{path} %>" data-bs-toggle="modal" data-bs-target="#saveModal"><%= $name %></a></td>
       <td><%= $child->{size} %> bytes</td>
 %     }
       <td><%= scalar localtime $child->{time} %></td>
