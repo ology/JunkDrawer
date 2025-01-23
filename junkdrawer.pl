@@ -118,7 +118,6 @@ get '/search' => sub ($c) {
   my $sort_by = $c->param('sort_by') || 'item';
   my $search = $c->param('search') || '';
   my $user = $c->session->{user};
-  my $backup = path(BACKUP, $user);
   my $nf = Number::Format->new;
   my $children = [];
   if ($search) {
@@ -127,7 +126,7 @@ get '/search' => sub ($c) {
       ->in($location);
     for my $child (@results) {
       my $path = path($child);
-      (my $place = $path) =~ s/\Q$backup\///;
+      (my $place = $path) =~ s/\Q$location\///;
       my $stat = $path->stat;
       push @$children, {
         name   => $path->basename,
@@ -140,7 +139,7 @@ get '/search' => sub ($c) {
       } unless $path->basename =~ /^\./;
     }
   }
-  $backup = path(BACKUP);
+  my $backup = path(BACKUP);
   (my $place = $location) =~ s/\Q$backup\///;
   my %places;
   my @places = split '/', $place;
