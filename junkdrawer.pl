@@ -101,6 +101,7 @@ get '/files' => sub ($c) {
   }
   $c->render(
     template => 'files',
+    search   => '',
     place    => $place, # backups without symlink
     places   => \@places, # breadcrumb labels
     crumbs   => \%places,
@@ -152,6 +153,7 @@ get '/search' => sub ($c) {
   }
   $c->render(
     template => 'files',
+    search   => $search,
     place    => $place, # backups without symlink
     places   => \@places, # breadcrumb labels
     crumbs   => \%places,
@@ -289,7 +291,7 @@ __DATA__
 <form action="<%= url_for('search') %>" method="get" class="padLR">
   <input type="hidden" name="location" value="<%= $location %>">
   <div class="row">
-    <input type="text" name="search" class="form-control" placeholder="Filename" required>
+    <input type="text" name="search" class="form-control" placeholder="Filename" value="<%= $search %>" required>
     <button type="submit" class="btn btn-sm btn-primary">Search</button>
   </div>
 </form>
