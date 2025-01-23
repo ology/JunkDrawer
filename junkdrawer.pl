@@ -297,7 +297,7 @@ __DATA__
 </form>
 <p></p>
 <hr>
-<p>Items under
+<p><b>Items under</b>
 % my $i = 0;
 % for my $crumb (@$places) {
 %   if ($i >= @$places - 1) {
