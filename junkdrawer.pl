@@ -317,7 +317,7 @@ __DATA__
 % my $i = 0;
 % for my $crumb (@$places) {
 %   if ($i >= @$places - 1) {
-<code><%= $crumb %> /</code>
+<code><%= $crumb %>/</code>
 %   }
 %   else {
 <code><a href="<%= url_for('files')->query(location => $crumbs->{$crumb}) %>"><%= $crumb %></a> /</code>
