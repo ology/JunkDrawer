@@ -320,7 +320,7 @@ __DATA__
   <code><%= $crumb %>/</code>
 %   }
 %   else {
-  <code><a href="<%= url_for('files')->query(location => $crumbs->{$crumb}) %>"><%= $crumb %></a> /</code>
+  <code><a href="<%= url_for('files')->query(location => $crumbs->{$crumb}) %>"><%= $crumb %></a>/</code>
 %   }
 %   $i++;
 % }
