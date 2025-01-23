@@ -87,12 +87,26 @@ get '/files' => sub ($c) {
   }
   my $backup = path(BACKUP);
   (my $place = $location) =~ s/$backup\///;
+  my %places;
+  my @places = split '/', $place;
+  my $tally = '';
+  for my $p (@places) {
+    if ($p eq $user) {
+      $tally = path($backup, $user);
+    }
+    else {
+      $tally = $tally->child($p);
+    }
+    $places{$p} = "$tally";
+  }
   $c->render(
     template => 'files',
-    place    => $place,    # backups without symlink
+    place    => $place, # backups without symlink
+    places   => \@places, # breadcrumb labels
+    crumbs   => \%places,
     location => path($location), # symlinked backups
     children => $children, # location items
-    sort_by  => $sort_by,  # sort column
+    sort_by  => $sort_by, # sort column
     user     => $user,
     results  => [],
   );
@@ -283,7 +297,18 @@ __DATA__
 </form>
 <p></p>
 <hr>
-<p>Items under <code><%= $place %>/</code>:</p>
+<p>Items under
+% my $i = 0;
+% for my $crumb (@$places) {
+%   if ($i >= @$places - 1) {
+<code><%= $crumb %> /</code>
+%   }
+%   else {
+<code><a href="<%= url_for('files')->query(location => $crumbs->{$crumb}) %>"><%= $crumb %></a> /</code>
+%   }
+%   $i++;
+% }
+:</p>
 <table class="table">
   <thead>
     <tr>
