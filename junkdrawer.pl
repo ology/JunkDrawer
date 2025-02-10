@@ -62,6 +62,7 @@ under sub ($c) {
 
 get '/files' => sub ($c) {
   my $location = $c->param('location') || '';
+  # $c->log->info("LOCATION: $location");
   my $sort_by = $c->param('sort_by') || 'item';
   my $user = $c->session->{user};
   my $children = [];
@@ -234,7 +235,9 @@ sub _dir_iter {
   return $children;
 }
 
-app->log->level('info');
+my $log = Mojo::Log->new(path => './server.log', level => 'info');
+app->log($log);
+
 app->start;
 
 __DATA__
@@ -282,7 +285,7 @@ __DATA__
         <code class="source"></code>
       </div>
       <div class="modal-footer">
-        <form method="get" class="saveForm">
+        <form action="<%= url_for('files') %>" method="get" class="saveForm">
           <input type="hidden" class="location" name="location" value="">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Save</button>
